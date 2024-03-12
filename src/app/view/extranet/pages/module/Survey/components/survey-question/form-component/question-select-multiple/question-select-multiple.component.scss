@@ -1,0 +1,25 @@
+::ng-deep .dynamic-delete-button {
+    cursor: pointer;
+    position: relative;
+    top: 4px;
+    font-size: 30px !important;
+    color: #999;
+    transition: all 0.3s;
+}
+
+.dynamic-delete-button:hover {
+    color: #777;    
+}
+
+
+.descripcion-input{
+    margin-right: 10px;
+    border-width: 0 0 1px 0;
+    flex: 1;
+}
+
+
+.form-option{
+    display: flex;
+    align-items: center;
+}

@@ -1,0 +1,20 @@
+::ng-deep   .card-section .ant-card-head{
+    background-color: #fff;
+}
+.section{
+    background: #fff;
+    padding: 4px;
+}
+.container{
+    max-width: 875px;
+    width: 100%;
+    margin: auto;
+}
+.tittle-input{
+    font-size: 28px;
+    overflow: hidden;
+    &.secondary {
+
+      font-size: 20px;
+    }
+}

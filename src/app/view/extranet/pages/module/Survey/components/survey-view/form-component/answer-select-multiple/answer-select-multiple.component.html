@@ -1,0 +1,10 @@
+<form nz-form [nzLayout]="'vertical'">
+    <ng-container>
+        <nz-form-item>
+            <nz-form-control [nzValidateStatus]="inputControl()" nzErrorTip="Por favor, seleccione una opcion">
+                <checkbox-custom [data]="datacheckbox()" (change)="changeCheck($event)" />
+            </nz-form-control>
+        </nz-form-item>
+    </ng-container>
+</form>
+

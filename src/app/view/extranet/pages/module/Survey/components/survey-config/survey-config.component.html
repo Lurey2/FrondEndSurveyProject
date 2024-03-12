@@ -1,0 +1,77 @@
+<form nz-form  [formGroup]="formSurvey()"   [nzLayout]="'vertical'" >
+  <nz-form-item>
+    <nz-form-label   >
+      <span class="text-subTittle" >
+        Titulo de la encuesta
+      </span>
+    </nz-form-label>
+    <nz-form-control nzErrorTip="Este campo es requerido" >
+      <input nz-input placeholder="placeholder"  style="background-color: #F1F3F5;" formControlName="title" />
+    </nz-form-control>
+  </nz-form-item>
+  <div class=" border-0 border-b border-slate-200 pb-1  border-solid " >
+    <span class="text-subTittle" >
+      Configuracion
+    </span>
+  </div>
+  <div class="my-2 flex flex-col gap-4" >
+    <div class="flex items-center justify-between " >
+      <div nz-tooltip [nzTooltipTitle]="message()"  ><nz-switch   [nzDisabled]="disabled()" formControlName="showPublic" ></nz-switch></div>
+      <span  class="flex gap-2"  >
+        <button [disabled]="!f.showPublic.value" (click)="copyRaw()" class="bg-transparent border-0  disabled:text-slate-200" nz-tooltip nzTooltipTitle="Enviar" >
+          <span nz-icon nzType="send"  class="cursor-pointer text-base" nzTheme="outline"  ></span>
+        </button>
+        Activo
+      </span>
+    </div>
+    <div class="flex items-center justify-between " >
+      <div><nz-switch formControlName="score" ></nz-switch></div>
+      <span  >Examen</span>
+    </div>
+    <div class="flex items-center justify-between " >
+      <div><nz-switch formControlName="requiredLogged" ></nz-switch></div>
+      <span  >¿Necesita Logearse?</span>
+    </div>
+  </div>
+  <!--
+  <div class=" border-0 border-b border-slate-200 pb-1  border-solid flex justify-between " >
+    <span class="text-subTittle" >
+      Edicion <span></span>
+    </span>
+    <div nz-tooltip [nzTooltipTitle]="message()"  >
+      <nz-switch  formControlName="showEdit"  [nzDisabled]="disabled()" nzSize="small" ></nz-switch>
+    </div>
+  </div>
+  <div class="my-2 flex flex-col gap-4" *ngIf="f.showEdit.value" >
+    <div class="flex justify-between  items-center " >
+      <input nz-input placeholder="Invitar..." (keyup.enter)="searchEmail()" [formControl]="searchControl"   class="flex-1" >
+      <div >
+        <span nz-icon nzType="paper-clip" nz-tooltip nzTooltipTitle="Compartir Link"  class="text-xl p-2 cursor-pointer"  nzTheme="outline"></span>
+      </div>
+    </div>
+    <div  >
+      <div class="text-subTittle flex items-center justify-between pr-1" >
+        <span>Usuarios compartidos:</span>
+        <span>{{f.sharedUsers.value.length}}</span>
+      </div>
+      <div class="border border-solid border-slate-300 rounded" >
+        @if ( f.sharedUsers.value.length === 0){
+          <div class="min-h-14 w-full  flex items-center justify-center" >
+            <span>No hay ningun compañero agregado</span>
+          </div>
+        }@else{
+          <div class="p-2 flex flex-col gap-2 " >
+            <div *ngFor="let user of f.sharedUsers.value;let i = index"  class="flex items-center justify-between "  >
+              <span class="text-subTittle" >
+                {{user.email}}
+              </span>
+              <span nz-icon nzType="delete" (click)="delete(i)"  class="text-red-600 border p-1 border-solid border-red-600 rounded-full cursor-pointer " >
+              </span>
+            </div>
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>-->
+</form>

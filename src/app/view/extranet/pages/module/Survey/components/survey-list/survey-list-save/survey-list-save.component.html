@@ -1,0 +1,27 @@
+<nz-divider nzText="Formulario Guardados" nzOrientation="left"></nz-divider>
+
+
+<nz-spin [nzSpinning]="loading()"  >
+    @if ( surveys().length === 0){
+        <nz-empty  [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
+            <ng-template #contentTpl>
+                <span>
+                    No hay encuestas guardadas
+
+                </span>
+            </ng-template>
+            <ng-template #footerTpl>
+                <button nz-button nzType="primary" routerLink="./new" >Crear encuesta</button>
+            </ng-template>
+        </nz-empty>
+    }@else {
+      <div class="grid grid-cols-4 gap-2 max-lg:grid-cols-3 max-sm:grid-cols-2 " >
+        @for (encuesta of surveys(); track i;let i = $index) {
+          <div>
+            <survey-card [coverUrl]="encuesta.previeImageURL" (delete)="delete($event)" [code]="encuesta.sharedCode" [idSurvey]="encuesta.id" [title]="encuesta.title" />
+          </div>
+        }
+      </div>
+    }
+</nz-spin>
+

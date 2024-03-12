@@ -1,0 +1,57 @@
+header-extranet{
+  position: relative;
+}
+.nav-item{
+  font-weight: 500;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  a{
+    color: black;
+  }
+}
+
+.nav-item-scroll{
+  display: flex;
+  font-weight: 500;
+  flex-direction: column;
+  gap : 0.8rem;
+  a{
+    color: black;
+    font-size: 1.2rem;
+  }
+}
+
+.active{
+  color: blue !important;
+}
+
+
+.menu-scroll-open{
+  height: calc(100% - 3rem);
+  top: 2.85rem;
+  animation-name: openScroll;
+  animation-duration: 0.222s;
+  animation-fill-mode: forwards;
+}
+@media (max-width:768px) {
+    .nav-item{
+      display: none;
+    }
+}
+
+
+@keyframes openScroll {
+  0%{
+    opacity: 0;
+    transform: translateX(10%) translateY(-10%);
+  }
+  30%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}

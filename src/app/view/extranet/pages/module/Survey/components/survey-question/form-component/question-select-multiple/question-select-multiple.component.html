@@ -1,0 +1,37 @@
+@if (form){
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="form" >
+        <ng-container  formArrayName="options" >
+            <div *ngFor="let control of detalleOptions.controls; let i = index"   [formGroupName]="i">
+                <div nz-row >
+                    <div  nz-col [nzSpan]="1" >
+                        <nz-form-item >
+                            <nz-form-control >
+                                <label nz-checkbox formControlName="correct"  ></label>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div  nz-col [nzSpan]="23" >
+                        <nz-form-item >
+                            <nz-form-control nzErrorTip="Rellene la opcion">
+                                <div class="form-option" >
+                                    <input  class="descripcion-input" #inputOption formControlName="description"  nz-input placeholder="Escriba la opcion" />
+                                    <button nz-button  nzDanger nzShape="circle" (click)="delete(i)"  >
+                                        <span nz-icon   nzType="close"></span>
+                                    </button>
+                                </div>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <nz-form-item>
+            <nz-form-control [nzXs]="{ span: 24, offset: 0 }"  >
+              <button nz-button nzType="dashed" style="width: 100%;" (click)="add()" >
+                <span nz-icon nzType="plus"></span>
+                Aumentar opción
+              </button>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+}

@@ -1,0 +1,81 @@
+
+<form [formGroup]="sectionForm()">
+    <div formArrayName="questions" nz-flex [nzGap]="'middle'" [nzVertical]="true">
+
+        <div *ngFor="let control of detalleQuestion.controls;let i = index" [tabindex]="i"  nz-flex  (click)="countQuestionFocus.set(i)"  [nzVertical]="true"  nzGap="small"   >
+            @if (countQuestionFocus() === i ){
+                <div nz-flex  nzJustify="center" >
+                    <button nz-button  nzType="dashed" class="button-adition" (click)="addIndex(i)"   nzShape="circle"  >
+                        <span nz-icon   nzType="plus"></span>
+                    </button>
+                </div>
+            }
+            <div nz-flex [nzVertical]="true"  [formGroupName]="i" nzGap="small" >
+                <nz-card  class="card-question shadow-lg " [nzTitle]="headerContent" [nzExtra]="headerExtraContent"  >
+                    @switch (control.get('questionType')?.value){
+                        @case ('respuestaCorta'){
+                            <question-response-short  #Option />
+                        }
+                        @case ('parrafo'){
+                            <question-response-long  #Option />
+                        }
+                        @case ('seleccion'){
+                            <question-select-simple  #Option />
+                        }
+                        @case ('seleccionMultiple'){
+                            <question-select-multiple #Option  />
+                        }
+
+                    }
+                    <nz-divider></nz-divider>
+                    <div nz-flex [nzVertical]="false" nzJustify="space-between" nzAlign="center" >
+                        <div   nz-flex [nzVertical]="false" nzGap="small" >
+                            <nz-switch formControlName="required" class="text-blue-600" ></nz-switch>
+                            <span>Obligatorio</span>
+                        </div>
+                        <div>
+                            @if (detalleQuestion.controls.length > 1){
+                                <button nz-button class="button-delete"   nzDanger nzShape="circle" (click)="delete(i)"  >
+                                    <span nz-icon   nzType="delete"></span>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </nz-card>
+
+                <ng-template #headerContent >
+
+                      <input nz-input #titleQuestion  class="input-title-question "  [ngClass]="{'errorInput': (control.get('title')?.hasError('required') &&  control.get('title')?.dirty  )}"     placeholder="TITULO DE LA PREGUNTA" formControlName="title" nzBorderless />
+
+                </ng-template>
+                <ng-template #headerExtraContent >
+                    <nz-select nzPlaceHolder="TIPO PREGUNTA" [compareWith]="compareType"  formControlName="questionType"  nzBorderless [nzCustomTemplate]="defaultTemplate" >
+                        @for (menu of typeMenu ; track menu.icon ){
+                            <nz-option nzCustomContent   [nzKey]="menu.icon" [nzLabel]="menu.description" [nzValue]="menu.value" >
+                                <div nz-flex [nzVertical]="false" nzAlign="center"  nzGap="small" >
+                                    <span nz-icon [nzType]="menu.icon"></span>
+                                    <span>{{menu.description}} </span>
+                                </div>
+                            </nz-option>
+                        }
+                    </nz-select>
+                </ng-template>
+
+            </div>
+            @if (countQuestionFocus() === i ){
+                <div nz-flex  nzJustify="center" >
+                    <button nz-button  nzType="dashed" class="button-adition" (click)="addIndex(i + 1)"  nzShape="circle"  >
+                        <span nz-icon   nzType="plus"></span>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</form>
+
+<ng-template #defaultTemplate let-selected>
+    <div style="display: flex;gap: 10px; align-items: center;color: white;" >
+        <span nz-icon [nzType]="selected.key" style="color: white;" nzTheme="outline"></span>
+        <span  >{{ selected.nzLabel}} </span>
+    </div>
+</ng-template>

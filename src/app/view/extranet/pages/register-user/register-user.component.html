@@ -1,0 +1,105 @@
+<form nz-form  [formGroup]="form" >
+  <div class="   max-w-screen-md mx-auto w-full ">
+    <div class="flex justify-between m-8  h-full items-center bg-white py-8  px-4 rounded-sm shadow ">
+      <div class="flex-1 flex  items-center ">
+        <div class="w-full px-2 flex flex-col gap-6 ">
+          <div>
+            <div class="float-right mt-2" >
+              <img src="assets/png/logo_.png" class="h-10" alt="Logo de pagina">
+            </div>
+            <div class="font-medium text-2xl">
+              Registrarse
+            </div>
+            <div class="text-subTittle" >
+              Por favor ingrese los datos correspondiente.
+            </div>
+          </div>
+          <div class="w-full " nz-row   nzJustify="space-between" >
+            <nz-form-item  nz-col  [nzSpan]="11" >
+              <nz-form-label  >Nombre</nz-form-label>
+              <nz-form-control nzErrorTip="Por favor ingrese su Nombre">
+                <nz-input-group >
+                  <input  nz-input placeholder="Nombre" formControlName="firstName" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="11" nzOffset="2"   >
+              <nz-form-label >Apellido</nz-form-label>
+              <nz-form-control nzErrorTip="Por favor ingrese su apellido">
+                <nz-input-group >
+                  <input  nz-input placeholder="Apellido" formControlName="lastName" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="11" >
+              <nz-form-label  >E-mail</nz-form-label>
+              <nz-form-control [nzErrorTip]="ValidatorsEmail"  >
+                <nz-input-group >
+                  <input  nz-input type="email" placeholder="Email" formControlName="email" />
+                </nz-input-group>
+              </nz-form-control>
+              <ng-template #ValidatorsEmail >
+                @if (f.email.errors?.['err'] ){
+                  <div class="text-red-600"  >
+                      {{f.email.errors?.['err']}}
+                  </div>
+                }
+                @if (f.email.errors?.['required'] ){
+                  <div class="text-red-600"  >
+                    Por favor ingrese su Email
+                  </div>
+                }
+                @if (f.email.hasError('pattern')){
+                  <div class="text-red-600"  >
+                    El formato del email no es válido
+                  </div>
+                }
+              </ng-template>
+            </nz-form-item>
+            <nz-form-item nz-col [nzSpan]="11"  nzOffset="2" >
+              <nz-form-label >Contraseña</nz-form-label>
+              <nz-form-control nzErrorTip="Por favor ingrese la contraseña">
+                <nz-input-group >
+                  <input  nz-input type="password" placeholder="Contraseña" formControlName="password" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item  nz-col [nzSpan]="11"  >
+              <nz-form-label  >Confirmar Contraseña</nz-form-label>
+              <nz-form-control [nzErrorTip]="'Este campo es necesario'" [nzExtra]="erroPassword" >
+                <nz-input-group >
+                  <input  nz-input type="password" placeholder="Confirmar Contraseña" formControlName="confirmPassword" />
+                </nz-input-group>
+              </nz-form-control>
+              <ng-template #erroPassword >
+                @if (form.hasError('compareError')){
+                  <span class="text-red-600" >
+                    Las contraseñas no coinciden
+                  </span>
+                }
+              </ng-template>
+            </nz-form-item>
+
+          </div>
+
+
+          <div>
+            <button type="submit"  (click)="signUp()" class="w-full cursor-pointer bg-primary text-white border-0 rounded py-2">
+              @if (loading()){
+                <span nz-icon [nzType]="'loading'"></span>
+              }@else {
+                <span>Registrase</span>
+              }
+            </button>
+          </div>
+          <div class="text-center" >
+            <span>
+              ¿tienes una cuenta ?
+              <a [routerLink]="['/signIn']" [queryParams]="queryParam()" class="font-medium" > Iniciar Sesion</a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

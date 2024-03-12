@@ -1,0 +1,31 @@
+
+<div class="main-view bg-blue-500 rounded  " >
+  <div  class="w-full  text-main-view  animate-appear-animation " >
+    <div class="font-base text-2xl text-white  " >
+      Bienvenido a nuestra plataforma donde puedes crear formularios, encuestas o exámenes personalizados de manera fácil y rápida.
+    </div>
+    <div class="flex  justify-center gap-2" >
+      <button class="w-32 py-2  font-medium text-blue-600  bg-white rounded border-0 cursor-pointer" [routerLink]="['/survey/new']" >Crear Formulario</button>
+      <button class="w-32 py-2 font-medium rounded border-slate-500   bg-white cursor-pointer border-0   " [routerLink]="['/survey']"  >Ver plantilla</button>
+    </div>
+  </div>
+  <img src="assets/svg/survey.svg" class="h-full opacity-50" alt="">
+</div>
+<section-main-view>
+  <div class="my-4" >
+    <div class="px-4 grid gap-x-28 max-md:grid-cols-2 max-sm:grid-cols-1  max-sm:gap-y-6 gap-y-16 grid-cols-3 " >
+      @for (item of data ; track item.icon){
+        <div class="w-full    border border-solid  rounded shadow p-2   " [ngClass]="item.borderColor + ' ' + item.bgColor"   >
+          <div class="flex items-center justify-between" >
+            <h2 class="text-2xl" >{{item.title}}</h2>
+            <span nz-icon [nzType]="item.icon" class="text-xl" nzTheme="outline"></span>
+          </div>
+          <div >
+            <p class="text-white text-lg font-light" >{{item.label}}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section-main-view>
+

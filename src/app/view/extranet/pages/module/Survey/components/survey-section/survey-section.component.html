@@ -1,0 +1,38 @@
+<!--<button (click)="add()">
+    cargando
+</button>-->
+
+<form [formGroup]="surveyForm()">
+    <div formArrayName="sections" nz-flex [nzGap]="80" class="container"  [nzVertical]="true">
+        <div *ngFor="let control of detalleSection.controls; let i = index" >
+          <nz-divider [nzText]="textSection " *ngIf=" i > 0" ></nz-divider>
+          <ng-template #textSection class="px-2" > <span class="font-serif text-2xl " >Seccion {{i+1}}</span> </ng-template>
+            <div  nz-flex [nzVertical]="true" nzGap="middle" [formGroupName]="i">
+
+                <div>
+                    <nz-ribbon [nzText]="'Seccion ' + (i+1)"  nzColor="#3BA7FF">
+                        <nz-card class="card-section" [nzTitle]="headerContent" [nzExtra]="headerExtraContent"  >
+                            <input type="text" nz-input nzBorderless class="text-slate-400 focus:text-slate-500"  formControlName="description"  placeholder="Descripcion de la seccion">
+                        </nz-card>
+                    </nz-ribbon>
+                </div>
+                <ng-template #headerContent >
+                    <nz-form-item>
+                        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Por favor ponga el titulo de la seccion">
+                            <textarea formControlName="title"  appAutoSize class="tittle-input"  [ngClass]="{'secondary': i > 0}" nz-input  nzBorderless  placeholder="TITULO DE SECCION"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </ng-template>
+                <ng-template #headerExtraContent >
+                    <button nz-button nzType="primary" (click)="delete(i)" nzDanger [nzSize]="'default'" class="ml-xss">
+                        <span nz-icon nzType="delete"></span>
+                    </button>
+                </ng-template>
+
+                <survey-question  #Question [sectionForm]="getFormGroup(control)" />
+            </div>
+
+        </div>
+        <button nz-button nzType="dashed" (click)="add()" nzBlock>Agregar Seccion</button>
+    </div>
+</form>

@@ -1,0 +1,27 @@
+<div class="p-2 bg-slate-100" >
+
+  <form nz-form [nzLayout]="'vertical'" (ngSubmit)="save()" [formGroup]="formSurvey" >
+    <div nz-flex [nzVertical]="true" nzGap="large"  >
+      <div class="w-full flex justify-between items-center gap-10 p-2" >
+        <div class="flex gap-2 items-center" >
+          <span nz-icon nzType="container" class="text-base" [nzTheme]="'twotone'" [nzTwotoneColor]="'#2563EB'" nzTheme="outline"></span>
+          <span class="font-medium text-base text-blue-600" >Formulario de encuesta - {{f['title'].value}} </span>
+        </div>
+        <div nz-flex [nzVertical]="false" nzJustify="end" nzGap="small"  >
+          <button nz-button  type="submit" ><span nz-icon nzType="save"></span></button>
+          <button nz-button type="button"  (click)="openView(sharedLink()?.sharedCode!)"  [disabled]="formSurvey.value.id == 0" ><span nz-icon nzType="eye"></span></button>
+          <button nz-button  type="button" (click)="stateConfig(true)"   ><span nz-icon nzType="setting"></span></button>
+          <button nz-button nzType="primary"  nzDanger (click)="delete()"  [disabled]="formSurvey.value.id == 0" ><span nz-icon nzType="delete"></span></button>
+        </div>
+      </div>
+      <survey-section  [surveyForm]="formSurvey" #section   />
+    </div>
+  </form>
+</div>
+<nz-drawer [nzClosable]="true" [nzVisible]="visibled" nzPlacement="right" nzTitle="Configuracion" (nzOnClose)="stateConfig(false)" >
+  <ng-container *nzDrawerContent>
+    @if(visibled){
+      <survey-config  [formSurvey]="formSurvey" [sharedLink]="sharedLink()" />
+    }
+  </ng-container>
+</nz-drawer>

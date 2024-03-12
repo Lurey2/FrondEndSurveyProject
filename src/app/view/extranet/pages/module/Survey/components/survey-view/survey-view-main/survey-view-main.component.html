@@ -1,0 +1,52 @@
+<ng-container *ngIf="survey()" >
+  <div style="margin: 0 auto;max-width: 800px;" >
+    <form [formGroup]="formAnswer" (ngSubmit)="save()" >
+        <div nz-flex [nzVertical]="true" nzGap="small" >
+            @if ( detalleSections.controls.length > 1){
+                <nz-steps [nzCurrent]="currentPage()"  (nzIndexChange)="currentPage.set($event)" >
+                    @for (control of detalleSections.controls ; track control ; let i= $index){
+
+                        <nz-step [nzTitle]="stepTitle" [nzDisabled]="!loadedStep().includes(i)" ></nz-step>
+
+                        <ng-template #stepTitle>
+                        @if ( (i + 1) === detalleSections.controls.length){
+                            Ultima etapa
+                        }@else {
+                            Etapa {{i+1}}
+                        }
+                        </ng-template>
+
+                    }
+                </nz-steps>
+            }
+            <div formArrayName="answerSections">
+                <div *ngFor="let group of detalleSections.controls ; let i = index" [formGroupName]="i" >
+                    @if (i === currentPage()) {
+                        <survey-view-section [formGroup]="getFormGroup(group)"   [section]="survey().sections[i]" />
+                    }
+                </div>
+            </div>
+            <div   >
+                @if(currentPage()  > 0){
+                    <button nz-button style="float: left;" nzType="primary" (click)="step( currentPage() - 1)" type="button" >
+                        <span nz-icon nzType="left"></span>
+                        Atras
+                    </button>
+                }
+                @if ((currentPage() + 1) === detalleSections.controls.length){
+                    <button nz-button style="float: right;" nzType="primary"  type="submit"  >
+                        <span nz-icon nzType="send"></span>
+                        Enviar
+                    </button>
+                }@else{
+                    <button nz-button style="float: right;" nzType="primary" (click)="step( currentPage() + 1)" type="button" >
+                        Siguiente
+                        <span nz-icon nzType="right"></span>
+                    </button>
+                }
+
+            </div>
+        </div>
+    </form>
+  </div>
+</ng-container>

@@ -1,0 +1,15 @@
+.header-content{
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+::ng-deep  .input-tittle{
+    border-width: 0px 0px 1px 0px;
+    &:focus{
+       border-color: #fff;
+    }
+}

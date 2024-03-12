@@ -1,0 +1,33 @@
+
+<form >
+    <div nz-flex [nzGap]="'small'" [nzVertical]="true"  >
+        <div >
+
+            <nz-card nzType="inner" style="margin-top:16px;" [nzTitle]="titleCard">
+                @switch (questionData().questionType){
+                    @case ('respuestaCorta'){
+                        <answer-response-short [dataOption]="questionData()" [inputControl]="getControl(formGroup().controls['response']) " />
+                    }
+                    @case ('parrafo'){
+                        <answer-response-long [dataOption]="questionData()" [inputControl]="getControl(formGroup().controls['response']) " />
+                    }
+                    @case ('seleccion'){
+                        <answer-select-simple [dataOption]="questionData()" [inputControl]="getControl(formGroup().controls['check'])" />
+                    }
+                    @case ('seleccionMultiple'){
+                        <answer-select-multiple [dataOption]="questionData()" [inputControl]="getControl(formGroup().controls['check']) " />
+                    }
+
+                }
+            </nz-card>
+
+            <ng-template #titleCard >
+                {{questionData().title}}
+                @if (questionData().required){
+                    <span style="color: red;" >*</span>
+                }
+            </ng-template>
+        </div>
+
+    </div>
+</form>

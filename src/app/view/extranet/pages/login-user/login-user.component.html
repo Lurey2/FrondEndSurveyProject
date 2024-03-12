@@ -1,0 +1,57 @@
+<form nz-form [formGroup]="form" (ngSubmit)="initSession()">
+  <div class="   max-w-screen-xl mx-auto w-full ">
+    <div class="flex justify-between m-8  h-full items-center bg-white py-8  px-4 rounded-sm shadow ">
+      <div class="flex-1  max-md:hidden  ">
+        <img src="assets/svg/signIn.svg" class="w-full" alt="imagen de inicio de Sesion">
+      </div>
+      <div class="flex-1 flex justify-center items-center ">
+        <div class="max-w-sm w-full px-2 flex flex-col gap-6 ">
+          <div>
+
+          </div>
+          <div>
+            <div class="font-medium text-2xl">
+              Iniciar Sesion
+            </div>
+            <div class="text-subTittle" >
+              Por favor ingrese su email y password
+            </div>
+          </div>
+          <div class="flex flex-col gap-4" >
+            <div class="input-login" >
+                <input type="email" class="w-full" formControlName="email" placeholder="Email"  id="email" name="email" autocomplete="username" />
+            </div>
+            <div class="input-login"  >
+              <input [type]="hide() ? 'password' : 'text' " formControlName="password"  class="w-full " placeholder="Contraseña" id="password" name="password" autocomplete="current-password"  />
+              <span  nz-icon [nzType]="hide() ? 'eye-invisible' : 'eye'"  (click)="updateShow()"  class="text-base select-none cursor-pointer  " ></span>
+            </div>
+            @if (errorLogin()){
+              <div >
+                <span class="text-red-600 "   >Email o contraseña incorrecta</span>
+              </div>
+            }
+          </div>
+
+
+          <div>
+            <button type="submit"  class="w-full cursor-pointer bg-primary text-white border-0 rounded py-2">
+              @if (loading()){
+                <span nz-icon [nzType]="'loading'"></span>
+              }@else{
+                <span>
+                  Login
+                </span>
+              }
+            </button>
+          </div>
+          <div class="text-center" >
+            <span>
+              ¿No tiene una cuenta ?
+              <a [routerLink]="['/signUp']" [queryParams]="queryParam()" class="font-medium" > Registrarse</a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

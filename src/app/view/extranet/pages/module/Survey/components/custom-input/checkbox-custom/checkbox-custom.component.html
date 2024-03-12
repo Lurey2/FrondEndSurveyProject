@@ -1,0 +1,8 @@
+<form [formGroup]="form">
+    <div formArrayName="array" >
+        <div *ngFor="let item of detalleControlChecked.controls; let i = index"  [formGroupName]="i" >
+            <label nz-checkbox   formControlName="checked"   >{{data()[i].label}}</label> 
+        </div>
+    </div>
+</form>
+   

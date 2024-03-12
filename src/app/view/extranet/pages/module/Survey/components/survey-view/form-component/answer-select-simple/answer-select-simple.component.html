@@ -1,0 +1,17 @@
+<form nz-form [nzLayout]="'vertical'"   >
+    <ng-container>
+
+        <nz-form-item>
+            <nz-form-control nzErrorTip="Elige una opcion" >
+
+                <nz-radio-group  [formControl]="inputControl()"  >
+                    <div *ngFor="let option of dataOption().options;let i = index"  >
+                        <label nz-radio [nzValue]="[option]"  style="display: block;" > {{option.description}}</label>
+                    </div>
+                  </nz-radio-group>
+
+            </nz-form-control>
+        </nz-form-item>
+
+    </ng-container>
+</form>

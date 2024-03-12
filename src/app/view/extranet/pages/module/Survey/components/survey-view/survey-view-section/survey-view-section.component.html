@@ -1,0 +1,12 @@
+<form >
+    <div nz-flex [nzGap]="'middle'" [nzVertical]="true">
+        <survey-view-header [title]="section().title" [description]="section().description!" />
+        <ng-container formArrayName="questions" >
+            <div *ngFor="let control of detallePreguntas.controls; let i = index" >
+                <div>
+                    <survey-view-question  [formGroup]="formGroupControl(control)"  [questionData]="section().questions[i]" />
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</form>

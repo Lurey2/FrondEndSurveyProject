@@ -1,0 +1,66 @@
+<header  class="h-12   flex justify-between items-center px-4 shadow-sm " >
+  <a [routerLink]="['/']" >
+    <img src="assets/png/logo_.png" class="h-10" alt="">
+  </a>
+  <span class="flex-1" ></span>
+  <div class="nav-item   " >
+    <a [routerLink]="['/survey']" routerLinkActive="active"  >
+      <div  >
+        Plantilla
+      </div>
+    </a>
+    <a  [routerLink]="['/signIn']" *ngIf="!($loged | async)" routerLinkActive="active"  >
+      <div  >
+        Iniciar Sesion
+      </div>
+    </a>
+    <a  [routerLink]="['/signUp']" *ngIf="!($loged | async)" routerLinkActive="active"  >
+      <div  >
+        Registrarse
+      </div>
+    </a>
+    <a  (click)="logout()" *ngIf="($loged | async)"  >
+      <div  >
+        logout
+      </div>
+    </a>
+  </div>
+  <div class="hidden max-md:flex font-medium gap-2 items-center " (click)="changeStateScroll()"  >
+    @if(isShowScroll()){
+      <span nz-icon nzType="close" nzTheme="outline"></span>
+      <span>Cerrar</span>
+    }@else{
+      <span nz-icon nzType="menu" nzTheme="outline"></span>
+      <span>Menu</span>
+    }
+  </div>
+</header>
+@if (isShowScroll()){
+  <div class="fixed  w-full px-2 z-50 menu-scroll-open " >
+    <div class="bg-white w-full h-full rounded p-2 shadow-xl " >
+      <div class="nav-item-scroll" >
+        <a [routerLink]="['/survey']" routerLinkActive="active"  >
+          <div  >
+            Plantilla
+          </div>
+        </a>
+        <a  [routerLink]="['/signIn']" *ngIf="!($loged | async)" routerLinkActive="active"  >
+          <div  >
+            Iniciar Sesion
+          </div>
+        </a>
+        <a  [routerLink]="['/signUp']" *ngIf="!($loged | async)" routerLinkActive="active"  >
+          <div  >
+            Registrarse
+          </div>
+        </a>
+        <a  (click)="logout()" *ngIf="($loged | async)"  >
+          <div  >
+            logout
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+}
