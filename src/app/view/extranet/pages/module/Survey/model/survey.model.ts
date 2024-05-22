@@ -20,8 +20,9 @@ export interface Survey {
   score : boolean;
   showPublic : boolean;
   showEdit : boolean;
+  repeatForm : boolean;
   sharedUsers  :  any[];
-  title: string;
+  title?: string;
   sharedCode? : string ;
   sharedEdit? : string;
 }
@@ -35,6 +36,7 @@ export interface SurveyForm {
   score : FormControl<boolean>;
   showPublic : FormControl<boolean>;
   showEdit : FormControl<boolean>;
+  repeatForm : FormControl<boolean>;
   sharedUsers : FormControl<any>;
 }
 

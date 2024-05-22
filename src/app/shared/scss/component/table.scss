@@ -1,0 +1,38 @@
+.table_excel{
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid  rgba(#EFF1F4, 1);
+  border-radius: 5px;
+  color: rgba(#575962, 0.7);
+  td, th {
+    border: 1px solid #EFF1F4;
+    padding: 8px;
+  }
+  thead{
+    tr{
+      background-color: #D8F8FE;
+      th{
+        font-weight: 600;
+        text-transform: uppercase;
+        padding: 8px 4px;
+        color: #4171DD;
+      }
+
+    }
+  }
+
+  tbody{
+    tr{
+      &:nth-child(2n){
+        background-color: #F5F8FF;
+      }
+      td{
+        font-weight: 400;
+        padding: 7px 4px;
+      }
+
+
+    }
+  }
+
+}

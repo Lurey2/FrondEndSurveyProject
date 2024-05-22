@@ -16,7 +16,7 @@ export const userInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   return next(req).pipe(catchError((err : HttpErrorResponse) =>  {
-    if(err.status === HttpStatusCode.Forbidden){
+    if(err.status === HttpStatusCode.Unauthorized){
       authenticationService.logout();
       router.navigate(["/signIn"] , {queryParams : {redirectTo : router.url}})
       return of()

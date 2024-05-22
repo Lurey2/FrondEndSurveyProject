@@ -1,38 +1,41 @@
-<!--<button (click)="add()">
-    cargando
-</button>-->
+<form [formGroup]="surveyForm()"  >
+  <div class="component-list  max-md:hidden " >
+    <list-menu-component />
+  </div>
+    <div formArrayName="sections" class="container flex flex-col gap-10 "  >
+      <div  *ngFor="let control of detalleSection.controls; let i = index" #section (click)="focusSection.set(i)"  class="border rounded border-solid border-border-gray p-4" [formGroupName]="i" >
 
-<form [formGroup]="surveyForm()">
-    <div formArrayName="sections" nz-flex [nzGap]="80" class="container"  [nzVertical]="true">
-        <div *ngFor="let control of detalleSection.controls; let i = index" >
-          <nz-divider [nzText]="textSection " *ngIf=" i > 0" ></nz-divider>
-          <ng-template #textSection class="px-2" > <span class="font-serif text-2xl " >Seccion {{i+1}}</span> </ng-template>
-            <div  nz-flex [nzVertical]="true" nzGap="middle" [formGroupName]="i">
-
-                <div>
-                    <nz-ribbon [nzText]="'Seccion ' + (i+1)"  nzColor="#3BA7FF">
-                        <nz-card class="card-section" [nzTitle]="headerContent" [nzExtra]="headerExtraContent"  >
-                            <input type="text" nz-input nzBorderless class="text-slate-400 focus:text-slate-500"  formControlName="description"  placeholder="Descripcion de la seccion">
-                        </nz-card>
-                    </nz-ribbon>
-                </div>
-                <ng-template #headerContent >
-                    <nz-form-item>
-                        <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Por favor ponga el titulo de la seccion">
-                            <textarea formControlName="title"  appAutoSize class="tittle-input"  [ngClass]="{'secondary': i > 0}" nz-input  nzBorderless  placeholder="TITULO DE SECCION"></textarea>
-                        </nz-form-control>
-                    </nz-form-item>
-                </ng-template>
-                <ng-template #headerExtraContent >
-                    <button nz-button nzType="primary" (click)="delete(i)" nzDanger [nzSize]="'default'" class="ml-xss">
-                        <span nz-icon nzType="delete"></span>
-                    </button>
-                </ng-template>
-
-                <survey-question  #Question [sectionForm]="getFormGroup(control)" />
-            </div>
-
+        <div class="border-0 border-b border-solid border-border-gray m-1 flex justify-between items-center " >
+          <span class=" text-sm font-medium text-text-title-color italic " >
+            Seccion {{i + 1}}
+          </span>
+          <div>
+            <span nz-icon nzType="delete" (click)="delete(i)"  class="text-red-600 border border-solid cursor-pointer  border-red-500  rounded-full p-1 "  nzTheme="outline"></span>
+          </div>
         </div>
-        <button nz-button nzType="dashed" (click)="add()" nzBlock>Agregar Seccion</button>
+
+        <div class="bg-white rounded shadow-md border border-solid border-slate-100" >
+          <div class="  p-2 flex flex-col gap-2  "  >
+            <div>
+              <input-rich-text [control]="getFormControl(control,'title')"  placeholder="TITULO DE FORMULARIO" className="text-2xl border-0 border-b border-solid border-border-gray" />
+            </div>
+            <div>
+              <input-rich-text  [control]="getFormControl(control, 'description')" placeholder="descripcion de formulario " className="text-xs text-subTittle border-0 border-b border-solid border-border-gray" />
+            </div>
+          </div>
+        </div>
+        <div class="mt-4" >
+          <survey-question  #Question [isFocusSection]="focusSection() === i"  [sectionForm]="getFormGroup(control)" />
+        </div>
+      </div>
+      <button nz-button nzType="dashed" (click)="add()" nzBlock>Agregar Seccion</button>
     </div>
+    <div class="section-list flex flex-col gap-2" >
+      @for (item of detalleSection.controls ; track item ; let i = $index){
+        <div  (click)="moveTo(i)"   #buttonSection class="py-1 px-3 text-white  cursor-pointer transition duration-200 hover:bg-blue-400  rounded shadow" [ngClass]="i === focusSection() ? 'bg-blue-500' : 'bg-blue-300'" >
+          {{i + 1}}
+        </div>
+      }
+    </div>
+
 </form>

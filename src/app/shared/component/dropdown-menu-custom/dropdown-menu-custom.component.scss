@@ -1,0 +1,43 @@
+
+dropdown-menu-custom{
+  position: relative;
+  &.activeMenuCustom{
+    .menu-open{
+      visibility: visible;
+      opacity: 1 !important;
+      transform: translateY(110%) scale(100%) !important;
+      transition-property: visibility , opacity , transform  ;
+      transition-duration: 0s  , .333s  , 0.333s ;
+      transition-delay: 0.222s , 0.222s , 0.222s;
+    }
+  }
+  /*&:hover{
+    .menu-open{
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(110%) scale(100%);
+    }
+  }
+  &:not(:hover){
+    .menu-open{
+      opacity: 0;
+      transform: translateY(110%) scale(70%);
+    }
+  }*/
+}
+
+.menu-open{
+  bottom: 0;
+  visibility: hidden;
+  transition-property: visibility , opacity , transform  ;
+  transition-duration: 0s  , .333s  , 0.333s ;
+  transition-delay: 0.500s , 0.222s , 0.222s;
+  padding: 10px;
+  min-width: 220px;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  transform: translateY(110%) scale(70%);
+  margin-top: 10px;
+  z-index: 999;
+}

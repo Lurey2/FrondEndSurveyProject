@@ -3,6 +3,7 @@ import { GenericService } from '../Generic/generic.service';
 import { SignInUser, SignUpUser } from '../models/User.model';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 const api = "api/v1/auth"
 @Injectable({
@@ -12,14 +13,12 @@ export class AuthenticationService {
 
   router = inject(Router);
 
-  private isLoged = new BehaviorSubject<boolean>(false);
+  private userDetail = new BehaviorSubject<userDetail | null>(null);
 
-  public $isLoged = this.isLoged.asObservable();
+  public $userDetail = this.userDetail.asObservable();
 
   constructor(private generic : GenericService) {
-    if(this.retriveToken()){
-      this.isLoged.next(true);
-    }
+    this.loadStateUser();
    }
 
   signIn(data : SignInUser){
@@ -38,20 +37,40 @@ export class AuthenticationService {
 
   storageToken(token  : string){
     localStorage.setItem("token" , token);
-    this.isLoged.next(true);
+    this.loadStateUser();
+  }
+
+  removeToken(){
+    localStorage.removeItem("token");
+    this.loadStateUser();
   }
 
   retriveToken(){
     return localStorage.getItem("token");
   }
 
-  removeToken(){
-    localStorage.removeItem("token");
-    this.isLoged.next(false);
-  }
 
   isLogged(): boolean{
-    return this.isLoged.value;
+    return this.retrieveDecodeToken() ? true : false;
   }
 
+  retrieveDecodeToken() : userDetail | null{
+    if(this.retriveToken()){
+
+      return (jwtDecode(this.retriveToken()!)) as userDetail
+    }
+    return null;
+  }
+
+  private loadStateUser(){
+    this.userDetail.next(this.retrieveDecodeToken())
+  }
+
+}
+
+export interface userDetail {
+  exp : number,
+  iat : number,
+  name : string ,
+  sub: string
 }

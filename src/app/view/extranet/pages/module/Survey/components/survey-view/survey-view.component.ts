@@ -77,7 +77,9 @@ export class SurveyViewComponent  implements OnInit, OnDestroy{
     this.notificationService.$change.pipe(takeUntil(this.$destroy)).subscribe({
       next : () => {
         this.complete.set(true);
-        this.localStorageService.storage(true , "complete-" + this.code());
+        if (!this.survey()?.repeatForm){
+          this.localStorageService.storage(true , "complete-" + this.code());
+        }
       }
     })
   }

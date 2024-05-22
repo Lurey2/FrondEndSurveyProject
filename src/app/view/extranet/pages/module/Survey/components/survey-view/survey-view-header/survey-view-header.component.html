@@ -1,11 +1,13 @@
 <div class="view-header" >
     <div class="header" >
-        <h1>{{title()}}</h1>
+      <h1>
+        <div [innerHTML]="title()" ></div>
+      </h1>
     </div>
     <nz-divider></nz-divider>
     @if(description()){
         <div class="content"  >
-            <span>{{description()}}</span>
+          <div [innerHTML]="description()"  ></div>
         </div>
     }
 </div>

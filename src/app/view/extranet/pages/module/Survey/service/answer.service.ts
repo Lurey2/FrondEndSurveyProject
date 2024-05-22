@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GenericService } from '../../../../../../core/Generic/generic.service';
-import { Observable } from 'rxjs';
+import { Observable, ObservableLike } from 'rxjs';
 import { Answer } from '../model/answer.model';
 const api = "api/answer"
 const tokenKey = "tempSurvey";
@@ -19,7 +19,11 @@ export class AnswerService {
     return this.generic.all(api).all(`${id}`).get();
   }
 
-  save(survey : Answer) : Observable<Answer>{
-    return this.generic.all(api).all("create").post(survey);
+  findByIdSuvey(idSurvey : number) : Observable<Answer[]>{
+    return this.generic.all(api).all("findByIdSurvey").all(`${idSurvey}`).get()
+  }
+
+  save(answer : Answer) : Observable<Answer>{
+    return this.generic.all(api).all("create").post(answer);
   }
 }

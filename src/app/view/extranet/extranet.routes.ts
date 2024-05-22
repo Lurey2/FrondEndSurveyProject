@@ -21,5 +21,13 @@ export const routes: Routes = [
     path : 'signUp' ,
     loadComponent : () => import("./pages/register-user/register-user.component").then((c) => c.RegisterUserComponent),
   ///  canActivate : [userGuard],
+  },
+  {
+    path : 'dashboard',
+    loadChildren: () => import("./pages/module/dashboard/dashboard.routes").then(c => c.routes)
+  },
+  {
+    path : 'document',
+    loadChildren : () =>import("./pages/module/Document/document.routes").then(c => c.routes)
   }
 ];

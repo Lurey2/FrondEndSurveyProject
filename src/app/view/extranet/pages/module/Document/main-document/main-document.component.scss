@@ -1,0 +1,19 @@
+.table-size>tbody>tr{
+  >td:nth-child(1){
+    width: 2.5%;
+    text-align: center;
+  }
+  >td:nth-child(2){
+    width: calc(100% - 62.5%);
+  }
+  >td:nth-child(n+3){
+    width: 12%;
+    text-align: center;
+  }
+
+}
+.table-size>thead>tr{
+  >th:nth-child(n+3){
+    text-align: center;
+  }
+}

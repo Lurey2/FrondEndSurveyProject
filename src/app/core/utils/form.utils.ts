@@ -13,3 +13,15 @@ export function detectError(group : FormGroup){
       }
     });
 }
+
+export function moveRowFormArray(formArray : FormArray , currentIndex : number , nextIndex : number){
+  if (formArray.length <= nextIndex){
+      throw("NextIndex is greater that size formArray ")
+  }
+  if ( currentIndex === nextIndex ){
+    return
+  }
+  const group =  formArray.at(currentIndex);
+  formArray.removeAt(currentIndex);
+  formArray.insert(nextIndex , group);
+}

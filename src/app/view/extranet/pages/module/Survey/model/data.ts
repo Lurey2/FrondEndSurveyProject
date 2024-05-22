@@ -2,12 +2,12 @@ import { Question, Survey } from "./survey.model";
 
 export const DATAINITAL : Survey = {
     id : 0,
-    title : 'TITULO DE LA ENCUESTA',
     previeImageURL : 'assets/jpg/default.jpg',
     requiredLogged : false,
     score : false,
     showPublic : false,
     showEdit: false,
+    repeatForm : true,
     sharedUsers : [],
     sections : [
         {

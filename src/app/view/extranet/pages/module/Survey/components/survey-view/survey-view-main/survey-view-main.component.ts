@@ -31,6 +31,8 @@ export class SurveyViewMainComponent implements OnInit {
   notificationService = inject(NotificationService);
 
   survey = input.required<Survey>();
+  disabled = input<boolean>(false);
+
   currentPage = signal(0);
   loadedStep = signal([0]);
 

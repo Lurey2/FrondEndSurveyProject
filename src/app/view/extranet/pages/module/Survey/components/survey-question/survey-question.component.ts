@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChildren, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, effect, inject, input, signal } from '@angular/core';
 import { QuestionSelectSimpleComponent } from './form-component/question-select-simple/question-select-simple.component';
 import { AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Question, QuestionForm, tipoPregunta } from '../../model/survey.model';
@@ -16,17 +16,22 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CommonModule } from '@angular/common';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { InputRichTextComponent } from '../custom-input/input-rich-text/input-rich-text.component';
+import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop';
+import { moveRowFormArray } from '../../../../../../../core/utils/form.utils';
+import { ProviderSurveyService } from '../../service/provider-survey.service';
+import { Subject, takeUntil } from 'rxjs';
 
 
 
 @Component({
   selector: 'survey-question',
   standalone: true,
-  imports: [ QuestionSelectSimpleComponent  , CommonModule  ,NzButtonModule , NzDividerModule  , NzSwitchModule , QuestionSelectMultipleComponent , QuestionResponseLongComponent ,NzCardModule,  QuestionResponseShortComponent , FormsModule , ReactiveFormsModule,NzFlexModule , NzInputModule , NzSelectModule, NzIconModule, NzFormModule],
+  imports: [ QuestionSelectSimpleComponent , DragDropModule  , InputRichTextComponent, CommonModule  ,NzButtonModule , NzDividerModule  , NzSwitchModule , QuestionSelectMultipleComponent , QuestionResponseLongComponent ,NzCardModule,  QuestionResponseShortComponent , FormsModule , ReactiveFormsModule,NzFlexModule , NzInputModule , NzSelectModule, NzIconModule, NzFormModule],
   templateUrl: './survey-question.component.html',
   styleUrl: './survey-question.component.scss',
 })
-export class SurveyQuestionComponent implements OnInit , ComponentArray<Question> {
+export class SurveyQuestionComponent implements OnInit , ComponentArray<Question> , OnDestroy {
 
 
   @ViewChildren('Option') options!: QueryList<ComponentArray<any>>;
@@ -35,14 +40,28 @@ export class SurveyQuestionComponent implements OnInit , ComponentArray<Question
   fb : FormBuilder = inject(FormBuilder);
   controlContainer : ControlContainer = inject(ControlContainer);
   cdr  : ChangeDetectorRef = inject(ChangeDetectorRef);
+  provider : ProviderSurveyService= inject(ProviderSurveyService);
 
   sectionForm  = input.required<FormGroup>();
+  isFocusSection = input.required<boolean>();
 
   countQuestionFocus = signal<number>(-1);
 
   typeMenu = [{ description : 'Respuesta simple' , value : 'respuestaCorta' , icon : 'minus'} , { description : 'Respuesta larga',value : 'parrafo' , icon : 'menu' } , { description : 'Opcion simple' , value : 'seleccion' , icon : 'ordered-list' } , { description : 'Opcion multiple', value : 'seleccionMultiple' , icon : 'unordered-list'  } ];
 
+  destroy$ = new Subject<void>();
 
+  ngOnInit(): void {
+    this.provider.messageComponent.pipe(takeUntil(this.destroy$)).subscribe(
+      {
+        next: (c) => {
+          if(this.isFocusSection()){
+            this.addIndexType(c);
+          }
+        }
+      }
+    )
+  }
 
   get formGroup(): FormGroup<any>{
     const control : FormGroup<any> = this.sectionForm() ? this.sectionForm() : new FormGroup({});
@@ -51,11 +70,6 @@ export class SurveyQuestionComponent implements OnInit , ComponentArray<Question
   get detalleQuestion() : FormArray{
     return this.sectionForm().get('questions') as FormArray;
   }
-
-
-  ngOnInit(): void {
-  }
-
 
   detalleFormArray() : FormGroup<QuestionForm>{
     return this.fb.group<QuestionForm>({
@@ -70,6 +84,7 @@ export class SurveyQuestionComponent implements OnInit , ComponentArray<Question
 
   }
 
+  getFormControl(control: AbstractControl , controlName : string) { return control.get(controlName) as FormControl; }
   getFormGroup(control: AbstractControl) { return control as FormGroup; }
 
   compareType(a : any , b : any){
@@ -90,6 +105,46 @@ export class SurveyQuestionComponent implements OnInit , ComponentArray<Question
     this.childrenTitleQuestion.get(index)?.nativeElement.focus();
   }
 
+  addIndexType( type : tipoPregunta, index: number = this.detalleQuestion.length   ){
+    const group = this.detalleFormArray();
+    group.patchValue({
+      questionType : type
+    })
+    this.detalleQuestion.insert(index, group);
+    this.updateOrden();
+    this.cdr.detectChanges();
+    this.childrenTitleQuestion.get(index)?.nativeElement.focus();
+  }
+
+  moveList($event : any){
+    const prevIndex : number = $event.previousIndex ;
+    const currentIndex : number = $event.currentIndex ;
+    moveRowFormArray(this.detalleQuestion , prevIndex , currentIndex);
+    this.countQuestionFocus.set(currentIndex);
+    this.updateOrden();
+  }
+
+  dragOverComponent(element : HTMLDivElement , event : DragEvent){
+    event.preventDefault();
+    element.classList.add('h-8' , 'border-2' , 'border-dashed' ,  'text-xs' , 'text-text-title-color' , 'flex' , 'items-center' , 'justify-center' )
+    element.style.backgroundColor = '#E6E8FA';
+    element.style.borderColor= '#BBBDFD';
+    element.innerHTML = '<span>Agregar Componente</span>'
+  }
+
+  dragLeaveComponent(element : HTMLDivElement){
+    element.classList.remove('h-8' , 'border-2' , 'border-dashed' ,  'text-xs' , 'text-text-title-color' , 'flex' , 'items-center' , 'justify-center' )
+    element.style.backgroundColor = 'transparent';
+    element.style.borderColor= 'inital';
+    element.innerHTML = ''
+  }
+
+  dragDrop(event : DragEvent , element : HTMLDivElement , index : number ){
+    event.preventDefault();
+    this.dragLeaveComponent(element)
+    const questionType = event.dataTransfer?.getData('component')! as tipoPregunta;
+    this.addIndexType( questionType , index ,);
+  }
 
 
   update(list: Question[]): void {
@@ -118,6 +173,11 @@ export class SurveyQuestionComponent implements OnInit , ComponentArray<Question
   delete(index : number){
     this.detalleQuestion.removeAt(index);
     this.updateOrden()
+  }
+
+  ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
   }
 
 

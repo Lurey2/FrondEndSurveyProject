@@ -6,10 +6,10 @@ export const routes: Routes = [
     path : '',
     component : MainExtranetComponent,
     loadChildren : () => import('./view/extranet/extranet.routes').then(m => m.routes)
-  },
+  },/*
   {
     path: '**',
     redirectTo : '',
     pathMatch : 'full'
-  }
+  }*/
 ];

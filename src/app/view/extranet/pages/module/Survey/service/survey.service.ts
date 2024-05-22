@@ -4,7 +4,8 @@ import { Observable, concat, of, tap } from 'rxjs';
 import { GenericService } from '../../../../../../core/Generic/generic.service';
 import { HttpParams } from '@angular/common/http';
 import { Page } from '../../../../../../core/models/Page.interface';
-const api = "api/survey"
+import { SurveyAnswerDTO } from '../../../../../../core/models/dto';
+const api = "api/survey";
 const tokenKey = "tempSurvey";
 @Injectable({
   providedIn: 'root'
@@ -16,18 +17,16 @@ export class SurveyService {
 
   }
 
-
-
   getAll() : Observable<Survey[]>{
     return this.generic.all(api).get();
   }
 
-  findByIdUser(page : number = 0 , size :number  = 10,order = 'idSurvey' , asc : boolean = false):Observable<Page<Survey>>{
-    const params = new HttpParams();
-    params.append("page" , page);
-    params.append("size" , size);
-    params.append("order" , order);
-    params.append("asc" , asc);
+  findByIdUser(filter : string = ''   , page : number = 0 , size :number  = 10, asc : boolean = false , order = 'idSurvey' ):Observable<Page<SurveyAnswerDTO>>{
+    const params = new HttpParams().append("filterValue", filter)
+    .append("page" , page)
+    .append("size" , size)
+    .append("order" , order)
+    .append("asc" , asc);
     return this.generic.all(api).all("findByIdUser").get(params);
   }
 
@@ -58,6 +57,8 @@ export class SurveyService {
     const dataStorage = JSON.stringify(data);
     localStorage.setItem(tokenKey , dataStorage);
   }
+
+
 
   retrieve(): Survey{
     const data = localStorage.getItem(tokenKey);

@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-4" >
+  <div class="flex flex-col gap-1" >
+    <div class="bg-white rounded p-2  shadow-md text-text-title-color w-full" >
+      Componentes Basicos
+    </div>
+    <div class="w-full p-2 grid  grid-cols-4 gap-3 " >
+      @for (icon of componenteBasic; track icon.icon ; let i = $index){
+        <div draggable="true" (dragstart)="onDragStart($event , icon.value)" (click)="emitComponent(icon.value)"  class="bg-white rounded py-1 px-3 shadow flex cursor-pointer hover:bg-slate-200 justify-center items-center " >
+          <span nz-icon [nzType]="icon.icon" class="text-xl"  nzTheme="outline"></span>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,21 @@
+
+<div class="p-2" >
+ @for (section of survey().sections; track section.id ; let is = $index){
+   <div class="Section bg-white p-4 shadow  "  >
+     <div> {{section.title}} </div>
+    <div class="flex flex-col gap-4" >
+      @for (question of section.questions; track question.id ; let iq = $index ){
+        <div class="border border-solid border-border-gray rounded p-1 " >
+          <div  [innerHTML]="question.title" class="border-divider"  >
+
+          </div>
+          <div class="pl-2 py-2" >
+            {{answer().answerSections[is].answerQuestions[iq].response}}
+          </div>
+        </div>
+
+      }
+    </div>
+   </div>
+ }
+</div>

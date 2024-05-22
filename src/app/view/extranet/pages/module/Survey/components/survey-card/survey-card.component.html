@@ -58,11 +58,11 @@
     </div>
     <div class="pt-3 pb-2 flex justify-between items-center "  >
       <div class="flex items-center gap-2 text-lg  " >
-        <span class="text-base" >173</span>
+        <span class="text-base" >{{count()}}</span>
         <span nz-icon nzType="file-done" nzTheme="outline"></span>
       </div>
       <div class="flex gap-2 text-lg" >
-        <span nz-icon nzType="share-alt"  nzTheme="outline" class="text-blue-600 cursor-pointer transition ease-in-out  hover:text-sky-300 "  ></span>
+        <span nz-icon nzType="share-alt" (click)="copySharedLink()" nzTheme="outline" class="text-blue-600 cursor-pointer transition ease-in-out  hover:text-sky-300 "  ></span>
         <span nz-icon nzType="eye" [routerLink]="'./view/' + encode(code())"  nzTheme="outline" class=" cursor-pointer transition ease-in-out  hover:text-sky-300 "  ></span>
         <span nz-icon nzType="edit" [routerLink]="'./edit/' + idSurvey()" class="text-yellow-400 cursor-pointer transition ease-in-out  hover:text-sky-300"  ></span>
         <span nz-icon nzType="delete" (click)="emitDelete(idSurvey())"  class="text-red-600 cursor-pointer transition ease-in-out  hover:text-sky-300"  ></span>

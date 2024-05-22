@@ -21,11 +21,13 @@
                 }
             </nz-card>
 
-            <ng-template #titleCard >
-                {{questionData().title}}
-                @if (questionData().required){
-                    <span style="color: red;" >*</span>
-                }
+            <ng-template #titleCard   >
+              <div class="flex flex-wrap gap-1" >
+                <div [innerHTML]="questionData().title"  ></div>
+                  @if (questionData().required){
+                      <span style="color: red;" >*</span>
+                  }
+              </div>
             </ng-template>
         </div>
 

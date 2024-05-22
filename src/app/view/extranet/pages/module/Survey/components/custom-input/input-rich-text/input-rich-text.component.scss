@@ -1,0 +1,17 @@
+::ng-deep .NgxEditorCustom{
+  background-clip: padding-box;
+  border-radius: 4px;
+  /* border: 1px solid rgba(0,0,0,.2); */
+  position: relative;
+  transition: 0.222s;
+  font-weight: 500;
+}
+
+::ng-deep .NgxEditor__Content p {
+  margin: 0 !important;
+}
+
+::ng-deep .NgxEditor__Placeholder:before{
+  font-weight: 500 !important;
+  color: #98A7BB !important;
+}

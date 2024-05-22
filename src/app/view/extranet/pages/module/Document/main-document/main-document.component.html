@@ -1,0 +1,88 @@
+<div class="p-2" >
+  <div>
+    <h2 class="font-normal" >
+      Lista de documento creados
+    </h2>
+  </div>
+  <div class="bg-white shadow" >
+    <div class="flex p-2 w-full justify-between items-center " >
+      <div class="bg-input-bg-gray p-2 max-w-screen-sm flex  items-center gap-2 " >
+        <span nz-icon nzType="search" nzTheme="outline"></span>
+        <input type="text"    class="bg-transparent outline-none border-0  "  [formControl]="controlFilter" placeholder="buscar Documento" >
+      </div>
+      <div>
+        <nz-pagination [nzPageIndex]="pagination().pageIndex" [nzShowSizeChanger]="true"    [nzTotal]="pagination().total" nzShowSizeChanger [nzPageSize]="pagination().size" (nzPageIndexChange)="pageIndexChange($event)" (nzPageSizeChange)="pageSizeChange($event)" ></nz-pagination>
+      </div>
+    </div>
+
+    <div class="px-2 p-2" >
+      <table class="table_excel table-size " >
+        <thead>
+          <tr class="[&>*]:text-left"  >
+            <th  ></th>
+            <th>Nombre</th>
+            <th>F. de Creacion</th>
+            <th>F. de Modific.</th>
+            <th>Estado</th>
+            <th>Terminadas</th>
+            <th>...</th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="!loading();else loadingTemplate" >
+          @if (pageSurveyAnswer().length !== 0){
+            @for(item of pageSurveyAnswer();let i = $index ; track i){
+              <tr>
+                <td> {{ ((pagination().pageIndex - 1 ) * pagination().size) + i+1}} </td>
+                <td> {{item.documentName}} </td>
+                <td>
+                  @if(item.creation){
+                    <span>{{item.creation | date : 'yyyy-MM-dd'}} </span>
+                  }@else{
+                    <span  > - </span>
+                  }
+                </td>
+                <td>
+                  @if(item.creation){
+                    <span>{{item.modify | date : 'yyyy-MM-dd'}} </span>
+                  }@else{
+                    <span  > - </span>
+                  }   </td>
+                <td>
+                  @if(item.showPublic){
+                    <span class="text-green-400" >Publico</span>
+                  } @else{
+                    <span class="text-secondary" >Privado</span>
+                  }
+                </td>
+                <td> {{item.countComplete}} </td>
+                <td>
+                  <button nz-button nzType="default" [routerLink]="['/survey/edit/' + item.idSurvey]"   nzShape="circle"><span nz-icon nzType="edit"></span></button>
+                  <button nz-button nzType="default" (click)="viewDocument(item.idSurvey)"  nzShape="circle"><span nz-icon nzType="eye"></span></button>
+                </td>
+              </tr>
+            }
+          }@else {
+            <tr>
+              <td colSpan="7" class="py-2 text-center"  >No hay resultados de documentos creados</td>
+            </tr>
+
+          }
+
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-template #loadingTemplate >
+  <tr>
+    <td colSpan="7" >
+      <div class="py-4 flex items-center justify-center" >
+        <span nz-icon nzType="loading" nzTheme="outline" class="text-4xl" ></span>
+      </div>
+    </td>
+  </tr>
+</ng-template>

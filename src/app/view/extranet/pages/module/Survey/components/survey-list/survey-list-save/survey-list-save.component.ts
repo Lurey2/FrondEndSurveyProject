@@ -12,6 +12,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { RouterLink } from '@angular/router';
 import { DataService } from '../../../../../../../../core/service/data.service';
+import { SurveyAnswerDTO } from '../../../../../../../../core/models/dto';
 
 @Component({
   selector: 'survey-list-save',
@@ -26,7 +27,7 @@ export class SurveyListSaveComponent implements OnInit {
 
   isLooged = signal<boolean>(this.dataService.authentifications.isLogged());
   loading = signal<boolean>(false);
-  surveys = signal<Survey[]>([]);
+  surveys = signal<SurveyAnswerDTO[]>([]);
 
   ngOnInit(): void {
     this.loadSurvey();
@@ -35,7 +36,7 @@ export class SurveyListSaveComponent implements OnInit {
   loadSurvey(){
     if(this.isLooged()){
       this.loading.set(true)
-      this.surveyService.findByIdUser().pipe(finalize(() => this.loading.set(false))).subscribe((r) => {
+      this.surveyService.findByIdUser('' , 0, 12).pipe(finalize(() => this.loading.set(false))).subscribe((r) => {
         this.surveys.set(r.content);
       })
     }

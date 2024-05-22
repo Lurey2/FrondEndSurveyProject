@@ -1,11 +1,11 @@
-<div class="p-2 bg-slate-100" >
+<div class="p-2 bg-background-gray min-h-screen" >
 
   <form nz-form [nzLayout]="'vertical'" (ngSubmit)="save()" [formGroup]="formSurvey" >
     <div nz-flex [nzVertical]="true" nzGap="large"  >
       <div class="w-full flex justify-between items-center gap-10 p-2" >
         <div class="flex gap-2 items-center" >
           <span nz-icon nzType="container" class="text-base" [nzTheme]="'twotone'" [nzTwotoneColor]="'#2563EB'" nzTheme="outline"></span>
-          <span class="font-medium text-base text-blue-600" >Formulario de encuesta - {{f['title'].value}} </span>
+          <span class="font-medium text-base text-blue-600" > {{f['title'].value}} </span>
         </div>
         <div nz-flex [nzVertical]="false" nzJustify="end" nzGap="small"  >
           <button nz-button  type="submit" ><span nz-icon nzType="save"></span></button>
@@ -25,3 +25,17 @@
     }
   </ng-container>
 </nz-drawer>
+
+<nz-modal  [nzVisible]="visibledInitial" [nzClosable]="false"  [nzFooter]="null" [nzContent]="modalContent" >
+  <ng-template #modalContent>
+
+    <div class="flex gap-2 items-center"  >
+      <div class="bg-input-bg-gray flex-1 p-1 rounded " >
+        <input type="text" placeholder="Titulo de formulario" [formControl]="f.title" (keyup.enter)="closedInitialDialog()"  class="border-0 bg-transparent outline-none w-full p-2 "   >
+      </div>
+      <div  >
+        <button (click)="closedInitialDialog()" class="p-2 bg-transparent border-0 text-primary font-medium cursor-pointer " >Comenzar</button>
+      </div>
+    </div>
+  </ng-template>
+</nz-modal>

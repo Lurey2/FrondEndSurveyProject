@@ -15,10 +15,10 @@
             </ng-template>
         </nz-empty>
     }@else {
-      <div class="grid grid-cols-4 gap-2 max-lg:grid-cols-3 max-sm:grid-cols-2 " >
+      <div class="grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-sm:grid-cols-2 " >
         @for (encuesta of surveys(); track i;let i = $index) {
           <div>
-            <survey-card [coverUrl]="encuesta.previeImageURL" (delete)="delete($event)" [code]="encuesta.sharedCode" [idSurvey]="encuesta.id" [title]="encuesta.title" />
+            <survey-card [coverUrl]="encuesta.previeImageURL" [count]="encuesta.countComplete" (delete)="delete($event)" [code]="encuesta.sharedCode" [idSurvey]="encuesta.idSurvey" [title]="encuesta.documentName!" />
           </div>
         }
       </div>

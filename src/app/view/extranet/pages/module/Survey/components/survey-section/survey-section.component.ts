@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component,  OnInit, QueryList, ViewChildren, inject, input } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component,  ElementRef,  OnDestroy,  OnInit, QueryList, ViewChild, ViewChildren, inject, input, signal } from '@angular/core';
 import { SurveyHeaderComponent } from '../survey-header/survey-header.component';
 import { SurveyQuestionComponent } from '../survey-question/survey-question.component';
 import { CommonModule } from '@angular/common';
@@ -19,27 +19,43 @@ import { AutoSizeDirective } from '../../directives/auto-size.directive';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { Editor, NgxEditorComponent, NgxEditorModule, Toolbar } from 'ngx-editor';
+import { InputRichTextComponent } from '../custom-input/input-rich-text/input-rich-text.component';
+import { ListMenuComponentComponent } from '../list-menu-component/list-menu-component.component';
+import { AnimationBuilder, animate, keyframes, style } from '@angular/animations';
+import { ProviderSurveyService } from '../../service/provider-survey.service';
+import { Subject, takeUntil } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'survey-section',
   standalone: true,
-  imports: [SurveyHeaderComponent ,NzDividerModule , NzCarouselModule , NzBadgeModule , AutoSizeDirective, NzCardModule ,NzButtonModule, NzSpaceModule, SurveyInputComponent , SurveyQuestionComponent , CommonModule , NzFlexModule,NzSelectModule , NzIconModule , NzGridModule ,NzInputModule , FormsModule, ReactiveFormsModule , NzFormModule ],
+  imports: [SurveyHeaderComponent , ListMenuComponentComponent , RouterLink,InputRichTextComponent, NzDividerModule , NzCarouselModule , NzBadgeModule , AutoSizeDirective, NzCardModule ,NzButtonModule, NzSpaceModule, SurveyInputComponent , SurveyQuestionComponent , CommonModule , NzFlexModule,NzSelectModule , NzIconModule , NzGridModule ,NzInputModule , FormsModule, ReactiveFormsModule , NzFormModule ],
   templateUrl: './survey-section.component.html',
   styleUrl: './survey-section.component.scss'
 })
-export class SurveySectionComponent implements OnInit , ComponentArray<Section> {
+export class SurveySectionComponent implements OnInit , ComponentArray<Section>  , OnDestroy{
 
+  @ViewChildren('section') section!: QueryList<ElementRef<HTMLElement>>;
   @ViewChildren('Question') question!: QueryList<ComponentArray<Question>>;
+  @ViewChildren('buttonSection') buttonSection!: QueryList<ElementRef<any>>;
+  @ViewChild(NgxEditorComponent) editorComponent!: NgxEditorComponent;
 
   fb: FormBuilder = inject(FormBuilder);
   cdr  : ChangeDetectorRef = inject(ChangeDetectorRef);
-
+  animationBuilder = inject(AnimationBuilder);
+  providerSurvey = inject(ProviderSurveyService);
 
   surveyForm  = input.required<FormGroup<any>>();
 
+  focusSection = signal(0);
 
+  destroy$= new Subject<void>();
 
   ngOnInit(): void {
+    this.providerSurvey.messageComponent.pipe(takeUntil(this.destroy$)).subscribe({
+      next : () => this.boingButton(this.focusSection())
+    })
   }
 
 
@@ -49,6 +65,8 @@ export class SurveySectionComponent implements OnInit , ComponentArray<Section> 
 
 
 
+
+  getFormControl(control: AbstractControl , controlName : string) { return control.get(controlName) as FormControl; }
   getFormGroup(control: AbstractControl) { return control as FormGroup; }
 
   addDetalleFormGroup() : FormGroup<SectionForm> {
@@ -77,7 +95,10 @@ export class SurveySectionComponent implements OnInit , ComponentArray<Section> 
     }])
   }
 
+
+
   update(list: Section[]): void {
+
     list.forEach(data => {
       const group = this.addDetalleFormGroup();
       group.patchValue({
@@ -87,7 +108,7 @@ export class SurveySectionComponent implements OnInit , ComponentArray<Section> 
         title : data.title
       })
       this.cdr.detectChanges();
-      this.question.last.update(data.questions)
+      this.question.last.update(data.questions);
     })
   }
 
@@ -97,9 +118,39 @@ export class SurveySectionComponent implements OnInit , ComponentArray<Section> 
     })
   }
 
+  boingButton(index: number){
+    const factory = this.animationBuilder.build([
+      animate(200, keyframes([
+       style({ transform : 'scale(1.5)' , opacity: 0 , offset :  0.75}) ,
+       style({ transform : 'scale(1.5)' , opacity: 0 , offset :  1})
+      ]))
+    ]);
+
+    const player = factory.create(this.buttonSection.get(index)?.nativeElement);
+    player.init();
+    player.onDone(() => {
+      player.reset();
+    });
+    player.play();
+  }
+
+  moveTo(index : number){
+    this.section.get(index)?.nativeElement.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
+    this.focusSection.set(index);
+  }
+
 
   delete(i : number){
     this.detalleSection.removeAt(i);
     this.updateOrden();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

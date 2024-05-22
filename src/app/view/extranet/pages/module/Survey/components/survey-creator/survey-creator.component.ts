@@ -19,11 +19,12 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { SurveyConfigComponent } from '../survey-config/survey-config.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Location, PlatformLocation } from '@angular/common';
+import { NzDividerComponent } from 'ng-zorro-antd/divider';
 
 @Component({
   selector: 'survey-creator',
   standalone: true,
-  imports: [NzBreadCrumbModule, NzDrawerModule , SurveyConfigComponent, NzModalModule, RouterLink, NzFlexModule,SurveySectionComponent , NzButtonModule , NzIconModule ,  NzInputModule   , NzFormModule , FormsModule , ReactiveFormsModule],
+  imports: [NzBreadCrumbModule, NzDrawerModule , SurveyConfigComponent, NzModalModule, RouterLink, NzFlexModule,SurveySectionComponent , NzButtonModule , NzIconModule , NzDividerComponent ,  NzInputModule   , NzFormModule , FormsModule , ReactiveFormsModule],
   templateUrl: './survey-creator.component.html',
   styleUrl: './survey-creator.component.scss',
 })
@@ -43,7 +44,7 @@ export class SurveyCreatorComponent implements OnInit , OnDestroy{
   platformLocation = inject(PlatformLocation);
 
   sharedLink = signal<{sharedEdit : string , sharedCode : string} | null>(null);
-
+  visibledInitial = false;
   visibled = false;
 
 
@@ -57,6 +58,7 @@ export class SurveyCreatorComponent implements OnInit , OnDestroy{
     showPublic : new FormControl(false , {nonNullable : true}),
     sharedUsers : new FormControl<any>([]),
     showEdit : new FormControl<boolean>(false , {nonNullable : true}),
+    repeatForm : new FormControl<boolean>(false , {nonNullable : true}),
   })
 
   $destroy = new Subject<void>();
@@ -89,11 +91,15 @@ export class SurveyCreatorComponent implements OnInit , OnDestroy{
           this.modal.confirm({
             nzTitle: '<i>¿Desea recuperar los cambios hechos?</i>',
             nzOnOk: () => this.update(dataStorage),
-            nzOnCancel : () => {this.update(DATAINITAL) ; this.surveyService.deleteStorage()}
+            nzOnCancel : () => {
+              this.visibledInitial = true;
+              this.update(DATAINITAL) ;
+              this.surveyService.deleteStorage()}
           });
 
 
         }else{
+          this.visibledInitial = true;
           this.update(DATAINITAL);
         }
       }
@@ -105,10 +111,10 @@ export class SurveyCreatorComponent implements OnInit , OnDestroy{
   insertSaveAutomatic(){
     setTimeout(() => {
       this.formSurvey.valueChanges.pipe(takeUntil(this.$destroy),debounceTime(1000)).subscribe((s) => {
-        const value = this.formSurvey.value;
+        const value = this.formSurvey.getRawValue();
         const data :Survey = {
-          id : value.id!,
-          previeImageURL : value.previeImageURL!,
+          id : value.id,
+          previeImageURL : value.previeImageURL,
           title : value.title! ,
           sections : value.sections,
           requiredLogged : value.requiredLogged!,
@@ -116,6 +122,7 @@ export class SurveyCreatorComponent implements OnInit , OnDestroy{
           sharedUsers : value.sharedUsers,
           showPublic : value.showPublic!,
           showEdit : value.showEdit!,
+          repeatForm : value.repeatForm,
           sharedCode : this.sharedLink()?.sharedCode,
           sharedEdit : this.sharedLink()?.sharedEdit
         }
@@ -134,9 +141,15 @@ export class SurveyCreatorComponent implements OnInit , OnDestroy{
     this.visibled = state;
   }
 
+  closedInitialDialog(){
+    if(this.f.title.valid){
+      this.visibledInitial = false;
+    }
+  }
+
   save(){
     if ( this.formSurvey.valid){
-      const value = this.formSurvey.value;
+      const value = this.formSurvey.getRawValue();
       const data : Survey = {
         id : value.id!,
         previeImageURL : value.previeImageURL!,
@@ -144,6 +157,7 @@ export class SurveyCreatorComponent implements OnInit , OnDestroy{
         title : value.title!,
         requiredLogged : value.requiredLogged!,
         score : value.score!,
+        repeatForm : value.repeatForm,
         sharedUsers: value.sharedUsers,
         showPublic : value.showPublic!,
         showEdit : value.showEdit!
@@ -177,17 +191,7 @@ export class SurveyCreatorComponent implements OnInit , OnDestroy{
 
 
   update(data : Survey){
-    this.formSurvey.patchValue({
-      id : data.id,
-      previeImageURL : data.previeImageURL,
-      title : data.title,
-      sections : data.sections,
-      requiredLogged: data.requiredLogged,
-      score: data.score,
-      sharedUsers : data.sharedUsers,
-      showEdit : data.showEdit,
-      showPublic : data.showPublic
-    })
+    this.formSurvey.patchValue(data)
 
     if(this.sharedLink() || data.sharedEdit){
       this.sharedLink.set({

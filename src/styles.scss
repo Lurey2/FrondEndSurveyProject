@@ -2,7 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url('./app/shared/scss/shared.scss');
 * {
   margin: 0;
   padding: 0;
@@ -11,4 +11,10 @@
 }
 .no-scroll {
   overflow: hidden;
+}
+
+@layer base {
+  .border-divider {
+    @apply border-0 border-b border-solid border-border-gray ;
+  }
 }

@@ -5,6 +5,7 @@ export interface Answer {
     id : number,
     idSurvey : number,
     idPerson : number,
+    createdAt? : Date,
     answerSections : AnswerSection[]
 }
 export interface AnswerForm{

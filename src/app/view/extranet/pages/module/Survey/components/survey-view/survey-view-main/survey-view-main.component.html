@@ -34,7 +34,7 @@
                     </button>
                 }
                 @if ((currentPage() + 1) === detalleSections.controls.length){
-                    <button nz-button style="float: right;" nzType="primary"  type="submit"  >
+                    <button nz-button style="float: right;" nzType="primary"  [disabled]="disabled()" type="submit"  >
                         <span nz-icon nzType="send"></span>
                         Enviar
                     </button>

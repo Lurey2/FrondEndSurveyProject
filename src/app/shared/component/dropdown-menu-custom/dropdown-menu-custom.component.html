@@ -1,0 +1,13 @@
+<div class="cursor-pointer" >
+  @if(template()){
+    <div [ngTemplateOutlet]="template()" ></div>
+  }@else{
+    {{label()}}
+  }
+</div>
+
+
+<div class="bg-white absolute shadow-lg rounded menu-open" >
+  <ng-content >
+  </ng-content>
+</div>

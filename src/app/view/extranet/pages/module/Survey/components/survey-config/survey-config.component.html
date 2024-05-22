@@ -16,21 +16,25 @@
   </div>
   <div class="my-2 flex flex-col gap-4" >
     <div class="flex items-center justify-between " >
-      <div nz-tooltip [nzTooltipTitle]="message()"  ><nz-switch   [nzDisabled]="disabled()" formControlName="showPublic" ></nz-switch></div>
       <span  class="flex gap-2"  >
-        <button [disabled]="!f.showPublic.value" (click)="copyRaw()" class="bg-transparent border-0  disabled:text-slate-200" nz-tooltip nzTooltipTitle="Enviar" >
+        Habilitar enlace
+        <button [disabled]="!f.showPublic.value" (click)="copyRaw()" class="bg-transparent border-0  disabled:text-slate-200" nz-tooltip nzTooltipTitle="Copiar enlace" >
           <span nz-icon nzType="send"  class="cursor-pointer text-base" nzTheme="outline"  ></span>
         </button>
-        Activo
       </span>
+      <div nz-tooltip [nzTooltipTitle]="message()"  ><nz-switch   [nzDisabled]="disabled()" formControlName="showPublic" ></nz-switch></div>
     </div>
     <div class="flex items-center justify-between " >
+      <span  >Calificar</span>
       <div><nz-switch formControlName="score" ></nz-switch></div>
-      <span  >Examen</span>
     </div>
     <div class="flex items-center justify-between " >
+      <span  >Inicio sesión requerido</span>
       <div><nz-switch formControlName="requiredLogged" ></nz-switch></div>
-      <span  >¿Necesita Logearse?</span>
+    </div>
+    <div class="flex items-center justify-between " >
+      <span  >¿Volver a completar?</span>
+      <div><nz-switch formControlName="repeatForm" ></nz-switch></div>
     </div>
   </div>
   <!--

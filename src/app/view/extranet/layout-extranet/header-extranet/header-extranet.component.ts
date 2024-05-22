@@ -4,12 +4,14 @@ import { AuthenticationService } from '../../../../core/service/authentication.s
 import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { debounceTime, filter } from 'rxjs';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { DropdownMenuCustomComponent } from '../../../../shared/component/dropdown-menu-custom/dropdown-menu-custom.component';
 
 @Component({
   selector: 'header-extranet',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  imports: [RouterLink , RouterModule , NzIconModule , CommonModule],
+  imports: [RouterLink , RouterModule , NzMenuModule , NzIconModule , CommonModule , DropdownMenuCustomComponent],
   templateUrl: './header-extranet.component.html',
   styleUrl: './header-extranet.component.scss'
 })
@@ -20,7 +22,7 @@ export class HeaderExtranetComponent {
 
   isShowScroll = signal(false);
 
-  $loged = this.authentificationService.$isLoged;
+  $userDetail = this.authentificationService.$userDetail;
 
   constructor(){
       this.router.events.pipe(
